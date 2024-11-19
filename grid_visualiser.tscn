@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dih8c5b0bx63w"]
+
+[ext_resource type="Script" path="res://grid_visualiser.gd" id="1_380fo"]
+
+[node name="GridVisualiser" type="Node2D"]
+script = ExtResource("1_380fo")

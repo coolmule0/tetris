@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="Tetronimo" load_steps=3 format=3 uid="uid://bimcr4p3cw87c"]
+
+[ext_resource type="Script" path="res://tetronimos/piece_data.gd" id="1_rolus"]
+[ext_resource type="Texture2D" uid="uid://u5huhvhxg2bo" path="res://Assets/Blue.png" id="2_jjaue"]
+
+[resource]
+script = ExtResource("1_rolus")
+cells = 0
+texture = ExtResource("2_jjaue")

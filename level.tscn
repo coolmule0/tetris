@@ -1,0 +1,24 @@
+[gd_scene load_steps=3 format=3 uid="uid://hxror2482e0v"]
+
+[ext_resource type="Script" path="res://grid.gd" id="1_862jm"]
+[ext_resource type="Script" path="res://grid_visualiser.gd" id="2_ysebs"]
+
+[node name="Level" type="Node2D"]
+
+[node name="Grid" type="Node2D" parent="."]
+script = ExtResource("1_862jm")
+grid_size = Vector2i(5, 15)
+
+[node name="GridVisualiser" type="Node2D" parent="." node_paths=PackedStringArray("grid")]
+script = ExtResource("2_ysebs")
+grid = NodePath("../Grid")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(839, 1689)
+zoom = Vector2(0.25, 0.25)
+
+[node name="GameManager" type="Node" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+
+[connection signal="grid_updated" from="Grid" to="GridVisualiser" method="_on_grid_grid_updated"]
