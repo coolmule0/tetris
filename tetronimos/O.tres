@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="PieceData" load_steps=3 format=3 uid="uid://n3ilviqqi4tg"]
+
+[ext_resource type="Script" path="res://tetronimos/piece_data.gd" id="1_v44je"]
+[ext_resource type="Texture2D" uid="uid://bjf3jiap1gfg7" path="res://Assets/Yellow.png" id="2_xftck"]
+
+[resource]
+script = ExtResource("1_v44je")
+shape = 3
+texture = ExtResource("2_xftck")

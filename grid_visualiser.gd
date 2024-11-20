@@ -34,7 +34,7 @@ func _on_grid_grid_updated() -> void:
 
 # Given an x,y index on the grid, get the coordinates in screen space
 func grid_to_screen_pos(pos: Vector2i) -> Vector2i:
-	return cell_size * pos + cell_size / 2
+	return cell_size * pos #+ cell_size / 2
 
 # An ineffecient way of showing what the grid looks like
 func render_grid():
@@ -46,10 +46,10 @@ func render_grid():
 	var grid_size = grid.grid_size
 	for y: int in grid_size.y:
 		for x: int in grid_size.x: 
-			if not grid.get_cell(Vector2i(x,y)).empty:
+			if not grid.get_cell(Vector2i(x,y)).is_empty:
 				var c := Sprite2D.new()
 				add_child(c)
 				blocks.append(c)
 				var screen_position := grid_to_screen_pos(Vector2i(x,y))
-				c.position = screen_position
+				c.position = screen_position + cell_size / 2
 				c.texture = grid.get_cell(Vector2i(x,y)).tex

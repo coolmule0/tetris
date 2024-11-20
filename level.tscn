@@ -1,24 +1,32 @@
-[gd_scene load_steps=3 format=3 uid="uid://hxror2482e0v"]
+[gd_scene load_steps=5 format=3 uid="uid://hxror2482e0v"]
 
 [ext_resource type="Script" path="res://grid.gd" id="1_862jm"]
 [ext_resource type="Script" path="res://grid_visualiser.gd" id="2_ysebs"]
+[ext_resource type="PackedScene" uid="uid://d3gvylhn4oarn" path="res://game_manager.tscn" id="3_7v6v1"]
+[ext_resource type="Script" path="res://spawn_queue.gd" id="4_baby6"]
 
 [node name="Level" type="Node2D"]
 
 [node name="Grid" type="Node2D" parent="."]
 script = ExtResource("1_862jm")
-grid_size = Vector2i(5, 15)
+grid_size = Vector2i(10, 16)
 
 [node name="GridVisualiser" type="Node2D" parent="." node_paths=PackedStringArray("grid")]
 script = ExtResource("2_ysebs")
 grid = NodePath("../Grid")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(839, 1689)
+position = Vector2(1199, 2239)
 zoom = Vector2(0.25, 0.25)
 
-[node name="GameManager" type="Node" parent="."]
-
 [node name="Sprite2D" type="Sprite2D" parent="."]
+
+[node name="SpawnQueue" type="Node" parent="."]
+script = ExtResource("4_baby6")
+
+[node name="GameManager" parent="." node_paths=PackedStringArray("spawn_queue", "grid_visualiser", "grid") instance=ExtResource("3_7v6v1")]
+spawn_queue = NodePath("../SpawnQueue")
+grid_visualiser = NodePath("../GridVisualiser")
+grid = NodePath("../Grid")
 
 [connection signal="grid_updated" from="Grid" to="GridVisualiser" method="_on_grid_grid_updated"]
