@@ -7,6 +7,5 @@ script = ExtResource("1_2do8p")
 
 [node name="MoveTimer" type="Timer" parent="."]
 editor_description = "How fast the pieces move. Increases as level increases"
-autostart = true
 
 [connection signal="timeout" from="MoveTimer" to="." method="_on_move_timer_timeout"]

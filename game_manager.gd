@@ -22,6 +22,7 @@ const SPAWN_LOCATION := Vector2i(3, 0)
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	spawn_tetronimo()
+	grid.line_cleared.connect(on_grid_line_cleared)
 	pass # Replace with function body.
 
 
@@ -36,13 +37,17 @@ func _on_move_timer_timeout() -> void:
 func spawn_tetronimo():
 	var new_piece_type = spawn_queue.serve()
 	var t = TETRONIMO.instantiate() as Tetronimo
-	t.piece_type = new_piece_type
 	t.grid_visualiser = grid_visualiser
 	t.grid = grid
 	t.game_manager = self
+	t.set_cells(new_piece_type)
 	grid_visualiser.add_child(t)
 	t.piece_locked.connect(on_tetronimo_locked)
 	t.set_grid_position(SPAWN_LOCATION)
+	t.pivot = new_piece_type.pivot_point
 
 func on_tetronimo_locked():
 	spawn_tetronimo()
+
+func on_grid_line_cleared():
+	lines += 1

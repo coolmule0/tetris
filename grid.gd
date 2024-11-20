@@ -1,4 +1,3 @@
-@tool
 class_name Grid
 extends Node2D
 
@@ -25,15 +24,15 @@ func _ready() -> void:
 		for x: int in grid_size.x:
 			_landed[_get_idx(Vector2i(x,y))] = Block.new()
 
-# Insert a tetronimo into the grid at given spawn position
-func add_shape(shape: PieceData, spawn_position := Vector2i(0,0)):
-	for c in shape.get_cells():
+# Insert a group of cells from a tetronimo into the grid
+#func add_shape(shape: PieceData, spawn_position := Vector2i(0,0)):
+func add_cells(shape: Array[Vector2i], tex: Texture):
+	for c in shape:
 		var b := Block.new()
-		b.tex = shape.texture
+		b.tex = tex
 		b.is_empty = false
-		set_cell(c + spawn_position, b)
+		set_cell(c, b)
 	grid_updated.emit()
-	
 	check_lines()
 
 ## Add a filled cell to a particular coord in the grid

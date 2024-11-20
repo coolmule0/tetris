@@ -1,9 +1,10 @@
 [gd_resource type="Resource" script_class="PieceData" load_steps=3 format=3 uid="uid://bimcr4p3cw87c"]
 
-[ext_resource type="Script" path="res://tetronimos/piece_data.gd" id="1_gilkr"]
-[ext_resource type="Texture2D" uid="uid://bvhiy4egr6qkq" path="res://Assets/Cyan.png" id="2_hae5b"]
+[ext_resource type="Script" path="res://tetronimos/piece_data.gd" id="1_sshjd"]
+[ext_resource type="Texture2D" uid="uid://bvhiy4egr6qkq" path="res://Assets/Cyan.png" id="2_x785o"]
 
 [resource]
-script = ExtResource("1_gilkr")
-shape = 5
-texture = ExtResource("2_hae5b")
+script = ExtResource("1_sshjd")
+shape = 4
+texture = ExtResource("2_x785o")
+pivot_point = Vector2i(1, 1)

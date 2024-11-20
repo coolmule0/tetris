@@ -4,7 +4,13 @@ extends Node2D
 
 enum Rotation {CLOCKWISE = 1, ANTICLOCKWISE = -1}
 
-var piece_type: PieceData
+@export var piece_type: PieceData
+# relative location of each cell
+var cell_positions: Array[Vector2i]
+var cell_nodes: Array[Node2D]
+var cell_texture: Texture
+# Where this shape should rotate around
+var pivot: Vector2i
 
 # Track where the shape is in the grid
 var grid_position: Vector2i
@@ -19,15 +25,34 @@ signal piece_locked
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	for c: Vector2i in piece_type.get_cells():
-		var s = Sprite2D.new()
-		add_child(s)
-		s.texture = piece_type.texture
-		s.position = grid_visualiser.grid_to_screen_pos(c) + grid_visualiser.cell_size / 2
-	self.position = grid_visualiser.grid_to_screen_pos(grid_position)
+	#for c: Vector2i in piece_type.get_cells():
+		#cell_positions.append(c)
+		#var s = Sprite2D.new()
+		#add_child(s)
+		#s.texture = cell_texture
+		#s.position = grid_visualiser.grid_to_screen_pos(c) + grid_visualiser.cell_size / 2
+	#cell_texture = piece_type.texture
+	#for c: Vector2i in piece_type.COLLECTION[piece_type.shape]: #piece_type.get_cells():
+		#var s = Sprite2D.new()
+		#add_child(s)
+		#s.texture = cell_texture
+		#s.position = Globals.cell_size * c + Globals.cell_size / 2
+		#cell_positions.append(c)
+		#cell_nodes.append(s)
+	#self.position = grid_visualiser.grid_to_screen_pos(grid_position)
 	
 	game_manager.move_timeout.connect(on_game_manager_move_timeout)
 
+func set_cells(piece_type: PieceData):
+	cell_texture = piece_type.texture
+	for c: Vector2i in piece_type.get_cells():
+		var s = Sprite2D.new()
+		add_child(s)
+		s.texture = cell_texture
+		s.position = grid_visualiser.grid_to_screen_pos(c) + grid_visualiser.cell_size / 2
+		cell_positions.append(c)
+		cell_nodes.append(s)
+	self.position = grid_visualiser.grid_to_screen_pos(grid_position)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -52,10 +77,49 @@ func _input(_event):
 		rotate_tetromino(Rotation.CLOCKWISE)
 
 func rotate_tetromino(orientation: Rotation):
-	pass
+	#var pivot: Vector2i = Vector2i(1,1)
+	var rotated_block = []
+	
+	# calculate the rotated positions
+	for c: Vector2i in cell_positions:
+		var relative_x := c.x - pivot.x
+		var relative_y := c.y - pivot.y
+		
+		var rotated_x
+		var rotated_y
+		if orientation == Rotation.CLOCKWISE:
+			rotated_x = relative_y
+			rotated_y = -relative_x
+		else:
+			rotated_x = -relative_y
+			rotated_y = relative_x
+		
+		var final_x = rotated_x + pivot.x
+		var final_y = rotated_y + pivot.y
+		
+		rotated_block.append(Vector2i(final_x, final_y))
+	
+	for c: Vector2i in rotated_block:
+		var new_cell_grid_pos = grid_position + c
+		
+		# out of bounds?
+		if new_cell_grid_pos.x < 0 or \
+		   new_cell_grid_pos.y < 0 or \
+		   new_cell_grid_pos.x > grid.grid_size.x - 1 or \
+		   new_cell_grid_pos.y > grid.grid_size.y - 1:
+			return
+		
+		# new position will hit a block
+		if grid.get_cell(new_cell_grid_pos).is_empty == false:
+			return
+	
+	# All checks past - rotate it
+	for i: int in range(rotated_block.size()):
+		cell_positions[i] = rotated_block[i]
+		cell_nodes[i].position = grid_visualiser.grid_to_screen_pos(rotated_block[i]) + grid_visualiser.cell_size / 2
 
 func move(direction: Vector2i):
-	for c: Vector2i in piece_type.get_cells():
+	for c: Vector2i in cell_positions:
 		var new_cell_grid_pos = grid_position + c + direction
 		
 		# out of bounds?
@@ -83,7 +147,11 @@ func hard_drop():
 	pass
 
 func lock():
-	grid.add_shape(piece_type, grid_position)
+	var grid_positions: Array[Vector2i] = []
+	for c: Vector2i in cell_positions:
+		grid_positions.append(c + grid_position)
+		#grid.add_cell(c + grid_position, cell_texture)
+	grid.add_cells(grid_positions, cell_texture)
 	piece_locked.emit()
 	queue_free()
 

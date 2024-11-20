@@ -7,3 +7,4 @@
 script = ExtResource("1_30q7e")
 shape = 2
 texture = ExtResource("2_rr8uo")
+pivot_point = Vector2i(1, 1)
