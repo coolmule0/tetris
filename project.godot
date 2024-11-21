@@ -13,6 +13,7 @@ config_version=5
 config/name="Tetris"
 run/main_scene="res://level.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
+boot_splash/bg_color=Color(0.143333, 0.14175, 0.454298, 1)
 config/icon="res://icon.svg"
 
 [autoload]
@@ -23,6 +24,7 @@ Globals="*res://globals.gd"
 
 window/size/viewport_width=750
 window/size/viewport_height=1152
+window/stretch/mode="canvas_items"
 
 [editor]
 
@@ -70,3 +72,4 @@ rotate_right={
 [rendering]
 
 renderer/rendering_method="mobile"
+environment/defaults/default_clear_color=Color(0.157396, 0.20328, 0.513403, 1)

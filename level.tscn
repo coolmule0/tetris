@@ -1,28 +1,23 @@
-[gd_scene load_steps=10 format=3 uid="uid://hxror2482e0v"]
+[gd_scene load_steps=12 format=3 uid="uid://hxror2482e0v"]
 
 [ext_resource type="Script" path="res://grid.gd" id="1_862jm"]
+[ext_resource type="Script" path="res://level.gd" id="1_upx4e"]
 [ext_resource type="Script" path="res://grid_visualiser.gd" id="2_ysebs"]
 [ext_resource type="PackedScene" uid="uid://d3gvylhn4oarn" path="res://game_manager.tscn" id="3_7v6v1"]
 [ext_resource type="Theme" uid="uid://bi5f1y3q8n01r" path="res://tetris_theme.tres" id="3_57dim"]
 [ext_resource type="Script" path="res://spawn_queue.gd" id="4_baby6"]
 [ext_resource type="Script" path="res://score_viewer.gd" id="5_y5kkr"]
+[ext_resource type="Script" path="res://grid_sub_viewport_container.gd" id="6_qd3ib"]
 [ext_resource type="Script" path="res://spawn_queue_viewer.gd" id="6_rupf8"]
 [ext_resource type="Script" path="res://level_viewer.gd" id="6_v2hym"]
 [ext_resource type="Script" path="res://line_viewer.gd" id="9_hwy7k"]
 
 [node name="Level" type="Node2D"]
+script = ExtResource("1_upx4e")
 
 [node name="Grid" type="Node2D" parent="."]
 script = ExtResource("1_862jm")
 grid_size = Vector2i(10, 16)
-
-[node name="GridVisualiser" type="Node2D" parent="." node_paths=PackedStringArray("grid")]
-script = ExtResource("2_ysebs")
-grid = NodePath("../Grid")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position = Vector2(1199, 2239)
-zoom = Vector2(0.25, 0.25)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 process_mode = 4
@@ -33,133 +28,152 @@ script = ExtResource("4_baby6")
 
 [node name="GameManager" parent="." node_paths=PackedStringArray("spawn_queue", "grid_visualiser", "grid") instance=ExtResource("3_7v6v1")]
 spawn_queue = NodePath("../SpawnQueue")
-grid_visualiser = NodePath("../GridVisualiser")
+grid_visualiser = NodePath("../CanvasLayer/MarginContainer/GridContainer/VBoxContainer2/SubViewportContainer/SubViewport/GridVisualiser")
 grid = NodePath("../Grid")
 
-[node name="Control" type="Control" parent="."]
+[node name="CanvasLayer" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 2703.0
-offset_bottom = 4510.0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+offset_right = 748.0
+offset_bottom = 1144.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme = ExtResource("3_57dim")
 
-[node name="SpawnQueueViewer" type="PanelContainer" parent="Control" node_paths=PackedStringArray("spawn_queue")]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -642.0
-offset_top = -259.0
-offset_right = -60.0
-offset_bottom = 308.0
-grow_horizontal = 0
-grow_vertical = 2
-script = ExtResource("6_rupf8")
-spawn_queue = NodePath("../../SpawnQueue")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/SpawnQueueViewer"]
+[node name="GridContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer"]
 layout_mode = 2
 
-[node name="NextTextLabel" type="Label" parent="Control/SpawnQueueViewer/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/GridContainer"]
 layout_mode = 2
-size_flags_vertical = 0
-text = "NEXT"
+size_flags_horizontal = 3
 
-[node name="PieceVisualiser" type="Control" parent="Control/SpawnQueueViewer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="ScoreViewer" type="PanelContainer" parent="Control" node_paths=PackedStringArray("game_manger")]
-layout_mode = 1
-anchors_preset = 1
-anchor_left = 1.0
-anchor_right = 1.0
-offset_left = -807.0
-offset_top = 140.0
-offset_right = -147.0
-offset_bottom = 707.0
-grow_horizontal = 0
-script = ExtResource("5_y5kkr")
-game_manger = NodePath("../../GameManager")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/ScoreViewer"]
+[node name="Container" type="Container" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer"]
+custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 
-[node name="TopTextLabel" type="Label" parent="Control/ScoreViewer/VBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="CanvasLayer/MarginContainer/GridContainer"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 100
-text = "TOP"
+size_flags_horizontal = 3
+alignment = 1
 
-[node name="TopLabel" type="Label" parent="Control/ScoreViewer/VBoxContainer"]
-unique_name_in_owner = true
+[node name="LinesViewer" type="PanelContainer" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer2" node_paths=PackedStringArray("game_manger")]
 layout_mode = 2
-theme = ExtResource("3_57dim")
-text = "000"
-
-[node name="ScoreTextLabel" type="Label" parent="Control/ScoreViewer/VBoxContainer"]
-layout_mode = 2
-text = "SCORE"
-
-[node name="ScoreLabel" type="Label" parent="Control/ScoreViewer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "000"
-
-[node name="LevelViewer" type="PanelContainer" parent="Control" node_paths=PackedStringArray("game_manger")]
-layout_mode = 1
-anchors_preset = 6
-anchor_left = 1.0
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -630.0
-offset_top = 355.0
-offset_right = -88.0
-offset_bottom = 662.0
-grow_horizontal = 0
-grow_vertical = 2
-script = ExtResource("6_v2hym")
-game_manger = NodePath("../../GameManager")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/LevelViewer"]
-layout_mode = 2
-
-[node name="LevelTextLabel" type="Label" parent="Control/LevelViewer/VBoxContainer"]
-layout_mode = 2
-text = "LEVEL"
-
-[node name="LevelLabel" type="Label" parent="Control/LevelViewer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "00"
-
-[node name="LinesViewer" type="PanelContainer" parent="Control" node_paths=PackedStringArray("game_manger")]
-layout_mode = 1
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -283.5
-offset_right = 287.5
-offset_bottom = 182.0
-grow_horizontal = 2
 script = ExtResource("9_hwy7k")
-game_manger = NodePath("../../GameManager")
+game_manger = NodePath("../../../../../GameManager")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/LinesViewer"]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer2/LinesViewer"]
 layout_mode = 2
 
-[node name="LinesTextLabel" type="Label" parent="Control/LinesViewer/HBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer2/LinesViewer/MarginContainer"]
 layout_mode = 2
-size_flags_horizontal = 8
+
+[node name="LinesTextLabel" type="Label" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer2/LinesViewer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
 text = "LINES -"
 
-[node name="LinesLabel" type="Label" parent="Control/LinesViewer/HBoxContainer"]
+[node name="LinesLabel" type="Label" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer2/LinesViewer/MarginContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
-[connection signal="grid_updated" from="Grid" to="GridVisualiser" method="_on_grid_grid_updated"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer2" node_paths=PackedStringArray("grid")]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 8
+script = ExtResource("6_qd3ib")
+grid = NodePath("../../../../../Grid")
+
+[node name="SubViewport" type="SubViewport" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer2/SubViewportContainer"]
+handle_input_locally = false
+size = Vector2i(500, 800)
+size_2d_override = Vector2i(1920, 3072)
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="GridVisualiser" type="Node2D" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer2/SubViewportContainer/SubViewport" node_paths=PackedStringArray("grid")]
+script = ExtResource("2_ysebs")
+grid = NodePath("../../../../../../../Grid")
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="CanvasLayer/MarginContainer/GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 1
+
+[node name="ScoreViewer" type="PanelContainer" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer3" node_paths=PackedStringArray("game_manger")]
+layout_mode = 2
+script = ExtResource("5_y5kkr")
+game_manger = NodePath("../../../../../GameManager")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer3/ScoreViewer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer3/ScoreViewer/MarginContainer"]
+layout_mode = 2
+
+[node name="TopTextLabel" type="Label" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer3/ScoreViewer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "TOP"
+
+[node name="TopLabel" type="Label" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer3/ScoreViewer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "000"
+
+[node name="ScoreTextLabel" type="Label" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer3/ScoreViewer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "SCORE"
+
+[node name="ScoreLabel" type="Label" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer3/ScoreViewer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "000"
+
+[node name="SpawnQueueViewer" type="PanelContainer" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer3" node_paths=PackedStringArray("spawn_queue")]
+layout_mode = 2
+script = ExtResource("6_rupf8")
+spawn_queue = NodePath("../../../../../SpawnQueue")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer3/SpawnQueueViewer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer3/SpawnQueueViewer/MarginContainer"]
+layout_mode = 2
+
+[node name="NextTextLabel" type="Label" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer3/SpawnQueueViewer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+text = "NEXT"
+
+[node name="PieceVisualiser" type="Control" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer3/SpawnQueueViewer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer3/SpawnQueueViewer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="LevelViewer" type="PanelContainer" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer3" node_paths=PackedStringArray("game_manger")]
+layout_mode = 2
+script = ExtResource("6_v2hym")
+game_manger = NodePath("../../../../../GameManager")
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer3/LevelViewer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer3/LevelViewer/MarginContainer"]
+layout_mode = 2
+
+[node name="LevelTextLabel" type="Label" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer3/LevelViewer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "LEVEL"
+
+[node name="LevelLabel" type="Label" parent="CanvasLayer/MarginContainer/GridContainer/VBoxContainer3/LevelViewer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "00"
+
+[connection signal="grid_updated" from="Grid" to="CanvasLayer/MarginContainer/GridContainer/VBoxContainer2/SubViewportContainer/SubViewport/GridVisualiser" method="_on_grid_grid_updated"]
