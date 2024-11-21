@@ -24,23 +24,7 @@ var game_manager: GameManager
 signal piece_locked
 
 # Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	#for c: Vector2i in piece_type.get_cells():
-		#cell_positions.append(c)
-		#var s = Sprite2D.new()
-		#add_child(s)
-		#s.texture = cell_texture
-		#s.position = grid_visualiser.grid_to_screen_pos(c) + grid_visualiser.cell_size / 2
-	#cell_texture = piece_type.texture
-	#for c: Vector2i in piece_type.COLLECTION[piece_type.shape]: #piece_type.get_cells():
-		#var s = Sprite2D.new()
-		#add_child(s)
-		#s.texture = cell_texture
-		#s.position = Globals.cell_size * c + Globals.cell_size / 2
-		#cell_positions.append(c)
-		#cell_nodes.append(s)
-	#self.position = grid_visualiser.grid_to_screen_pos(grid_position)
-	
+func _ready() -> void:	
 	game_manager.move_timeout.connect(on_game_manager_move_timeout)
 
 func set_cells(cell_piece_type: PieceData):
@@ -114,7 +98,7 @@ func rotate_tetromino(orientation: Rotation):
 		cell_positions[i] = rotated_block[i]
 		cell_nodes[i].position = grid_visualiser.grid_to_screen_pos(rotated_block[i]) + grid_visualiser.cell_size / 2
 
-func move(direction: Vector2i):
+func move(direction: Vector2i) -> bool:
 	for c: Vector2i in cell_positions:
 		var new_cell_grid_pos = grid_position + c + direction
 		
@@ -126,21 +110,23 @@ func move(direction: Vector2i):
 			# reached the bottom of the grid
 			if new_cell_grid_pos.y > grid.grid_size.y - 1:
 				lock()
-			return
+			return false
 		
 		# new position will hit a block
 		if grid.get_cell(new_cell_grid_pos).is_empty == false:
 			# moving down - lock the tile
 			if direction == Vector2i.DOWN:
 				lock()
-			return
+			return false
 	
 	# no issues, so move
 	grid_position += direction
 	self.position = grid_visualiser.grid_to_screen_pos(grid_position)
+	return true
 
 func hard_drop():
-	pass
+	while move(Vector2i.DOWN):
+		continue
 
 func lock():
 	var grid_positions: Array[Vector2i] = []
