@@ -1,3 +1,4 @@
+@tool
 class_name GridVisualiser
 extends Node2D
 
