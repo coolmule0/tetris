@@ -43,9 +43,9 @@ func _ready() -> void:
 	
 	game_manager.move_timeout.connect(on_game_manager_move_timeout)
 
-func set_cells(piece_type: PieceData):
-	cell_texture = piece_type.texture
-	for c: Vector2i in piece_type.get_cells():
+func set_cells(cell_piece_type: PieceData):
+	cell_texture = cell_piece_type.texture
+	for c: Vector2i in cell_piece_type.get_cells():
 		var s = Sprite2D.new()
 		add_child(s)
 		s.texture = cell_texture
@@ -53,10 +53,6 @@ func set_cells(piece_type: PieceData):
 		cell_positions.append(c)
 		cell_nodes.append(s)
 	self.position = grid_visualiser.grid_to_screen_pos(grid_position)
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 
 ## when the game manager timer expires, move the piece down
 func on_game_manager_move_timeout():

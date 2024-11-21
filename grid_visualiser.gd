@@ -13,19 +13,14 @@ func _ready() -> void:
 	for x: int in grid_size.x:
 		for y: int in grid_size.y:
 			# pixel position - include cell offset so 0,0 is the start of the grid
-			var position = cell_size * Vector2i(x, y) + cell_size / 2
+			var pixel_position = cell_size * Vector2i(x, y) + cell_size / 2
 			
 			var c := Sprite2D.new()
 			add_child(c)
-			c.position = position
+			c.position = pixel_position
 			c.texture = empty_cell
 			c.z_index = -1
 	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 
 var blocks: Array
 

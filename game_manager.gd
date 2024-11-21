@@ -2,10 +2,25 @@ class_name GameManager
 extends Node
 # Handles the game state
 
+signal level_changed(new_level: int)
+signal lines_changed(new_lines: int)
+signal score_changed(new_lines: int)
+
 ## Level the player has reached
-var level: int = 0
+var level: int = 0:
+	set(new_val):
+		level = new_val
+		level_changed.emit(new_val)
+		set_move_time()
 ## How many lines cleared
-var lines: int = 0
+var lines: int = 0:
+	set(new_val):
+		lines = new_val
+		lines_changed.emit(new_val)
+var score: int = 0:
+	set(new_val):
+		score = new_val
+		score_changed.emit(new_val)
 
 @onready var move_timer: Timer = $MoveTimer
 
@@ -26,11 +41,6 @@ func _ready() -> void:
 	pass # Replace with function body.
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-
 func _on_move_timer_timeout() -> void:
 	move_timeout.emit()
 
@@ -49,5 +59,16 @@ func spawn_tetronimo():
 func on_tetronimo_locked():
 	spawn_tetronimo()
 
-func on_grid_line_cleared():
+func on_grid_line_cleared(_line_id):
 	lines += 1
+	score += 10
+	
+	# Adjust level if necessary
+	var new_level = floor(lines / 10)
+	if new_level != level:
+		level = new_level
+
+## calculates and sets the move timer for the given level
+func set_move_time():
+	var time = pow(0.8 - ((level-1) * 0.007), level-1)
+	move_timer.wait_time=time

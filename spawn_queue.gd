@@ -15,12 +15,14 @@ const Z = preload("res://tetronimos/Z.tres")
 
 var piece_types: Array[PieceData] = [I, J, L, O, S, T, Z]
 
+signal queue_changed
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	for i in range(QUEUE_LENGTH):
 		var p_type = piece_types.pick_random() as PieceData
 		spawn_queue.append(p_type)
-	pass # Replace with function body.
+	queue_changed.emit()
 
 
 ## return the front of the queue and remove it
@@ -30,5 +32,7 @@ func serve() -> PieceData:
 	# add a new piece to the queue
 	var p_type = piece_types.pick_random() as PieceData
 	spawn_queue.append(p_type)
+	
+	queue_changed.emit()
 	
 	return to_give
