@@ -4,7 +4,8 @@ extends Node
 
 signal level_changed(new_level: int)
 signal lines_changed(new_lines: int)
-signal score_changed(new_lines: int)
+signal score_changed(new_score: int)
+signal highscore_changed(new_highscore: int)
 
 ## Level the player has reached
 var level: int = 0:
@@ -21,6 +22,14 @@ var score: int = 0:
 	set(new_val):
 		score = new_val
 		score_changed.emit(new_val)
+		if score > highscore:
+			highscore = score
+
+var highscore: int = -1:
+	set(new_val):
+		highscore = new_val
+		highscore_changed.emit(highscore)
+		save_highscore()
 
 @onready var move_timer: Timer = $MoveTimer
 
@@ -35,11 +44,14 @@ const TETRONIMO = preload("res://Tetronimo.tscn")
 
 const SPAWN_LOCATION := Vector2i(3, 0)
 
+#var highscore: int = 0
+const SAVEFILE = "user://score.save"
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	spawn_tetronimo()
 	grid.line_cleared.connect(on_grid_line_cleared)
-	pass # Replace with function body.
+	load_highscore()
 
 
 func _on_move_timer_timeout() -> void:
@@ -82,3 +94,25 @@ func on_grid_line_cleared(_line_id):
 func set_move_time():
 	var time = pow(0.8 - ((level-1) * 0.007), level-1)
 	move_timer.wait_time=time
+
+func load_highscore():
+	if not FileAccess.file_exists(SAVEFILE):
+		return
+	var save_file = FileAccess.open(SAVEFILE, FileAccess.READ)
+	var json_string = save_file.get_line()
+	var json = JSON.new()
+	var parse_result = json.parse(json_string)
+	if not parse_result == OK:
+		print("JSON Parse Error: ", json.get_error_message(), " in ", json_string, " at line ", json.get_error_line())
+		highscore = 0
+		return
+	
+	var score_data = json.data["highscore"]
+	if score_data > highscore:
+		highscore = score_data
+	pass
+
+func save_highscore():
+	var save_file = FileAccess.open(SAVEFILE, FileAccess.WRITE)
+	var json_string = JSON.stringify({"highscore": highscore})
+	save_file.store_line(json_string)
