@@ -1,5 +1,22 @@
-[gd_resource type="Theme" format=3 uid="uid://bi5f1y3q8n01r"]
+[gd_resource type="Theme" load_steps=4 format=3 uid="uid://bi5f1y3q8n01r"]
+
+[ext_resource type="FontFile" uid="uid://6qxfgy3ggptp" path="res://Assets/zig_____.ttf" id="1_2clga"]
+[ext_resource type="FontFile" uid="uid://bxflapeikt4vc" path="res://Assets/Bitend DEMO.otf" id="1_kye7j"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8eby4"]
+bg_color = Color(0.125911, 0.125911, 0.125911, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
 
 [resource]
+default_font = ExtResource("1_kye7j")
 Label/colors/font_outline_color = Color(0, 0, 0, 1)
 Label/font_sizes/font_size = 32
+Label/fonts/font = ExtResource("1_2clga")
+MarginContainer/constants/margin_bottom = 10
+MarginContainer/constants/margin_left = 10
+MarginContainer/constants/margin_right = 13
+MarginContainer/constants/margin_top = 10
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_8eby4")

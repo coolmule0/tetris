@@ -10,4 +10,5 @@ editor_description = "How fast the pieces move. Increases as level increases"
 wait_time = 0.75
 autostart = true
 
+[connection signal="game_over" from="." to="." method="_on_game_over"]
 [connection signal="timeout" from="MoveTimer" to="." method="_on_move_timer_timeout"]

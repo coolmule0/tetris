@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dddenph2txf1h"
-path="res://.godot/imported/Grid.png-7cb94410da10419a5f895fdff80711bb.ctex"
+uid="uid://u5huhvhxg2bo"
+path="res://.godot/imported/Blue.png-0ba6caceba96e3e2432bac1bb57d736a.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Grid.png"
-dest_files=["res://.godot/imported/Grid.png-7cb94410da10419a5f895fdff80711bb.ctex"]
+source_file="res://Assets/blocks/Blue.png"
+dest_files=["res://.godot/imported/Blue.png-0ba6caceba96e3e2432bac1bb57d736a.ctex"]
 
 [params]
 

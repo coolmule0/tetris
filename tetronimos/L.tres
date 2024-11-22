@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="PieceData" load_steps=3 format=3 uid="uid://byxmwpgvqutyx"]
 
 [ext_resource type="Script" path="res://tetronimos/piece_data.gd" id="1_rolus"]
-[ext_resource type="Texture2D" uid="uid://dopu8p8nw1nn8" path="res://Assets/Orange.png" id="2_q1nuw"]
+[ext_resource type="Texture2D" uid="uid://dopu8p8nw1nn8" path="res://Assets/blocks/Orange.png" id="2_q1nuw"]
 
 [resource]
 script = ExtResource("1_rolus")

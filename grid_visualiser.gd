@@ -4,7 +4,7 @@ extends Node2D
 
 @export var grid: Grid
 
-var empty_cell: Texture = preload("res://Assets/Grid.png")
+var empty_cell: Texture = preload("res://Assets/blocks/Grid.png")
 var cell_size := Vector2i(192, 192)
 
 # Called when the node enters the scene tree for the first time.

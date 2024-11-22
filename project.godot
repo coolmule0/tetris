@@ -25,6 +25,7 @@ Globals="*res://globals.gd"
 window/size/viewport_width=750
 window/size/viewport_height=1152
 window/stretch/mode="canvas_items"
+window/handheld/orientation=1
 
 [editor]
 

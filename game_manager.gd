@@ -29,6 +29,7 @@ var score: int = 0:
 @export var grid: Grid
 
 signal move_timeout
+signal game_over
 
 const TETRONIMO = preload("res://Tetronimo.tscn")
 
@@ -45,7 +46,7 @@ func _on_move_timer_timeout() -> void:
 	move_timeout.emit()
 
 func spawn_tetronimo():
-	var new_piece_type = spawn_queue.serve()
+	var new_piece_type := spawn_queue.serve()
 	var t = TETRONIMO.instantiate() as Tetronimo
 	t.grid_visualiser = grid_visualiser
 	t.grid = grid
@@ -55,6 +56,14 @@ func spawn_tetronimo():
 	t.piece_locked.connect(on_tetronimo_locked)
 	t.set_grid_position(SPAWN_LOCATION)
 	t.pivot = new_piece_type.pivot_point
+	
+	# check the spawned cell locations are free
+	for c: Vector2i in new_piece_type.get_cells():
+		if not grid.get_cell(c + SPAWN_LOCATION).is_empty:
+			game_over.emit()
+			t.set_process_input(false)
+			move_timer.stop()
+
 
 func on_tetronimo_locked():
 	spawn_tetronimo()
@@ -64,6 +73,7 @@ func on_grid_line_cleared(_line_id):
 	score += 10
 	
 	# Adjust level if necessary
+	@warning_ignore("integer_division")
 	var new_level = floor(lines / 10)
 	if new_level != level:
 		level = new_level
