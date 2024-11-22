@@ -11,10 +11,10 @@ config_version=5
 [application]
 
 config/name="Tetris"
-run/main_scene="res://level.tscn"
+run/main_scene="res://start_screen.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
 boot_splash/bg_color=Color(0.143333, 0.14175, 0.454298, 1)
-config/icon="res://icon.svg"
+config/icon="res://Assets/tetris-icon-5-717151006.png"
 
 [autoload]
 
@@ -73,4 +73,5 @@ rotate_right={
 [rendering]
 
 renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
 environment/defaults/default_clear_color=Color(0.157396, 0.20328, 0.513403, 1)

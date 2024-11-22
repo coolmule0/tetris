@@ -1,7 +1,6 @@
 [gd_scene load_steps=12 format=3 uid="uid://hxror2482e0v"]
 
 [ext_resource type="Script" path="res://grid.gd" id="1_862jm"]
-[ext_resource type="Script" path="res://level.gd" id="1_upx4e"]
 [ext_resource type="Script" path="res://grid_visualiser.gd" id="2_ysebs"]
 [ext_resource type="PackedScene" uid="uid://d3gvylhn4oarn" path="res://game_manager.tscn" id="3_7v6v1"]
 [ext_resource type="Theme" uid="uid://bi5f1y3q8n01r" path="res://tetris_theme.tres" id="3_57dim"]
@@ -11,9 +10,9 @@
 [ext_resource type="Script" path="res://spawn_queue_viewer.gd" id="6_rupf8"]
 [ext_resource type="Script" path="res://level_viewer.gd" id="6_v2hym"]
 [ext_resource type="Script" path="res://line_viewer.gd" id="9_hwy7k"]
+[ext_resource type="AudioStream" uid="uid://cvjlxv10xlt8" path="res://Assets/Original Tetris Theme (Tetris Soundtrack) Gameboy.mp3" id="11_g0kun"]
 
 [node name="Level" type="Node2D"]
-script = ExtResource("1_upx4e")
 
 [node name="Grid" type="Node2D" parent="."]
 script = ExtResource("1_862jm")
@@ -188,6 +187,10 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "00"
 horizontal_alignment = 1
+
+[node name="ThemeMusicPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_g0kun")
+autoplay = true
 
 [connection signal="grid_updated" from="Grid" to="CanvasLayer/MarginContainer/HBoxContainer/VBoxContainer2/GameContainer/SubViewportContainer/SubViewport/GridVisualiser" method="_on_grid_grid_updated"]
 [connection signal="game_over" from="GameManager" to="CanvasLayer/MarginContainer/HBoxContainer/VBoxContainer2/GameContainer/SubViewportContainer" method="_on_game_manager_game_over"]
