@@ -25,7 +25,7 @@ var score: int = 0:
 		if score > highscore:
 			highscore = score
 
-var highscore: int = -1:
+var highscore: int = 0:
 	set(new_val):
 		highscore = new_val
 		highscore_changed.emit(highscore)
